@@ -1,0 +1,105 @@
+{
+	"info": {
+		"_postman_id": "bf41950f-8f82-408e-87f7-59fd769beade",
+		"name": "Postman to Newman",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "13669707"
+	},
+	"item": [
+		{
+			"name": "Users Check",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has the required fields - id, fname, lname, username, and avatar\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('array');\r",
+							"    responseData.forEach(function(user) {\r",
+							"        pm.expect(user).to.have.property('id');\r",
+							"        pm.expect(user).to.have.property('fname');\r",
+							"        pm.expect(user).to.have.property('lname');\r",
+							"        pm.expect(user).to.have.property('username');\r",
+							"        pm.expect(user).to.have.property('avatar');\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Fname and lname must be non-empty strings\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  pm.expect(responseData).to.be.an('array');\r",
+							"  \r",
+							"  responseData.forEach(function(user) {\r",
+							"    pm.expect(user.fname).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Fname should not be empty\");\r",
+							"    pm.expect(user.lname).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Lname should not be empty\");\r",
+							"  });\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Avatar is either a non-empty string or null\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseData).to.be.an('array');\r",
+							"  \r",
+							"    responseData.forEach(function(user) {\r",
+							"        pm.expect(user.avatar).to.satisfy(function (avatar) {\r",
+							"            return typeof avatar === 'string' && avatar.length > 0 || avatar === null;\r",
+							"        }, \"Avatar should be a non-empty string or null\");\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://www.melivecode.com/api/users"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "{{UserCheckALL}}",
+			"value": "https://www.melivecode.com/api/users",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}

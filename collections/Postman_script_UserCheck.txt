@@ -1,0 +1,47 @@
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+
+pm.test("Response has the required fields - id, fname, lname, username, and avatar", function () {
+    const responseData = pm.response.json();
+    
+    pm.expect(responseData).to.be.an('array');
+    responseData.forEach(function(user) {
+        pm.expect(user).to.have.property('id');
+        pm.expect(user).to.have.property('fname');
+        pm.expect(user).to.have.property('lname');
+        pm.expect(user).to.have.property('username');
+        pm.expect(user).to.have.property('avatar');
+    });
+});
+
+
+pm.test("Fname and lname must be non-empty strings", function () {
+  const responseData = pm.response.json();
+  
+  pm.expect(responseData).to.be.an('array');
+  
+  responseData.forEach(function(user) {
+    pm.expect(user.fname).to.be.a('string').and.to.have.lengthOf.at.least(1, "Fname should not be empty");
+    pm.expect(user.lname).to.be.a('string').and.to.have.lengthOf.at.least(1, "Lname should not be empty");
+  });
+});
+
+
+pm.test("Avatar is either a non-empty string or null", function () {
+    const responseData = pm.response.json();
+
+    pm.expect(responseData).to.be.an('array');
+  
+    responseData.forEach(function(user) {
+        pm.expect(user.avatar).to.satisfy(function (avatar) {
+            return typeof avatar === 'string' && avatar.length > 0 || avatar === null;
+        }, "Avatar should be a non-empty string or null");
+    });
+});
+
+
+pm.test("Response time is less than 200ms", function () {
+  pm.expect(pm.response.responseTime).to.be.below(200);
+});
